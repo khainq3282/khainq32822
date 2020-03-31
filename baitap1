@@ -1,0 +1,242 @@
+#include <stdio.h>
+#include <conio.h>
+#include <windows.h>
+struct Student
+{
+	char FullName[50];
+	char studentID[30];
+	int dayofBirth;
+	char birthplace[20];
+	char classroomID[20];
+	char xeploai[20];
+	float Math,Philosophy ,English;
+	double dtbc;
+};
+int N = 2; //S? lu?ng sinh viên hi?n có (realtime)
+void AddStudent(Student st[]);
+void PrintStudent(Student st[]);
+void SortStudent(Student st[]);
+int FindStudent(Student st[]);
+void SearchClass(Student st[]);
+void xeploai(Student st[]);
+
+int Menu(int &choice);
+int main()
+{
+Student st[100]; //Khai báo m?ng ch?a t?i da 100 sv
+strcpy(st[0].FullName, "Nguyen Van A");
+strcpy(st[0].studentID, "1");
+st[0].dayofBirth=392000;
+strcpy(st[0].birthplace, "TP HCM");
+strcpy(st[0].classroomID, "PM191");
+st[0].dtbc=9;
+strcpy(st[0].xeploai, "Hoc luc gioi");
+
+strcpy(st[1].FullName, "Nguyen Van B");
+strcpy(st[1].studentID, "2");
+st[1].dayofBirth=392001;
+strcpy(st[1].birthplace, "TP HCM");
+strcpy(st[1].classroomID, "PM191");
+st[1].dtbc=6;
+strcpy(st[1].xeploai, "Hoc luc trung binh");
+int choice;
+do
+{
+system("CLS");
+Menu(choice);
+switch (choice)
+{
+case 1: AddStudent(st); break;
+case 2: PrintStudent(st); break;
+case 3: SortStudent(st);
+PrintStudent(st); break;
+case 4:{int pos = FindStudent(st);
+if (pos>=0)
+printf("Tim thay sv tai vi tri %d", pos + 1);
+else
+printf("Khong tim thay");
+break;}
+case 5: SearchClass( st);break;
+case 6: xeploai(st);break;
+case 0: break;
+default: printf("Chon sai chuc nang!!!"); break;
+}
+getch();
+}while (choice != 0); 
+}
+
+//Xây d?ng các hàm
+int Menu(int &choice)
+{
+printf("=======MENU========\n");
+printf("1. Them sinh vien\n");
+printf("2. In danh sach sinh vien\n");
+printf("3. Sap xep diem tang dan\n");
+printf("4. Tim kiem MSSV\n");
+printf("5. Tim kiem lop hoc\n");
+printf("6. Tim kiem xep loai\n");
+printf("0. Thoat\n");
+printf("===================\n");
+printf("Chon chuc nang:");
+scanf("%d", &choice);
+}
+void AddStudent(Student st[])
+{
+		fflush(stdin);
+		printf("Nhap ho va ten:");
+		gets(st[N].FullName);
+		printf("\nNhap vao ma so sinh vien: ");fflush(stdin);
+		gets(st[N].studentID);fflush(stdin);
+		printf("\nNhap vao ngay sinh: ");fflush(stdin);
+		scanf("%d",&st[N].dayofBirth);
+		printf("\nNhap vao noi sinh: ");fflush(stdin);
+		gets(st[N].birthplace);fflush(stdin);
+		printf("\nNhap vao ma lop hoc: ");fflush(stdin);
+		gets(st[N].classroomID);fflush(stdin);
+		// Nh?p diem toán.
+		do
+		{
+			printf("\nNhap vao diem toan: ");fflush(stdin);
+			scanf("%f", &st[N].Math);
+
+		if(st[N].Math < 0 || st[N].Math > 10)
+		{
+			printf("\nDiem toan khong hop le. Xin kiem tra lai !");fflush(stdin);
+		}
+		}while(st[N].Math < 0 || st[N].Math > 10);
+
+		// Nh?p di?m triet hoc
+		do
+		{
+			printf("\nNhap vao diem triet hoc: ");fflush(stdin);
+			scanf("%f", &st[N].Philosophy);
+
+			if(st[N].Philosophy < 0 ||st[N].Philosophy > 10)
+		{
+			printf("\nDiem ly khong hop le. Xin kiem tra lai !");
+		}
+	}while(st[N].Philosophy < 0 || st[N].Philosophy > 10);
+
+	// Nh?p di?m anhvan.
+	do{
+		printf("\nNhap vao diem anh van: ");fflush(stdin);
+		scanf("%f", &st[N].English);
+
+		if(st[N].English < 0 ||st[N].English > 10)
+		{
+			printf("\nDiem hoa khong hop le. Xin kiem tra lai !");
+		}
+	}
+         while(st[N].English < 0 || st[N].English > 10);
+         st[N].dtbc = (st[N].Math + st[N].Philosophy + st[N].English)/3;
+          if(st[N].dtbc>=8.0)
+		  			{//scanf("%s",&st[N].xeploai);
+					  printf("Loai Gioi");}
+
+          else if(st[N].dtbc<8.0 && st[N].dtbc>=6.5)
+
+                  {printf("Loai Kha");}
+
+          else if(st[N].dtbc<6.5 && st[N].dtbc>=5.0)
+                   {printf("Loai Trung binh");}
+
+          else
+                    {printf("Loai Yeu");}
+			N++;
+}
+void PrintStudent(Student st[])
+{printf("%25s%12s%15s%20s%20s%17s%20s\n","Ho va ten","MSSV","Ngay sinh","Noi sinh", "Ma so lop","GPA","Xep loai");
+for (int i = 0; i<N; i++)
+{
+printf("%25s%12s%15d%20s%20s%17.1f\n", st[i].FullName, st[i].studentID, st[i].dayofBirth,st[i].birthplace, st[i].classroomID,st[i].dtbc,st[i].xeploai);
+}
+}
+void SortStudent(Student st[])
+{
+Student temp;
+for (int i = 0; i<N - 1; i++)
+for (int j = N - 1; j>i; j--)
+if (st[j].dtbc <st[j - 1].dtbc)
+{
+temp = st[j];
+st[j] = st[j - 1];
+st[j - 1] = temp;
+}
+}
+int FindStudent(Student st[])
+{
+char studentID[21];
+fflush(stdin);
+printf("Nhap ma so sinh vien:");
+gets(studentID);
+for (int i = 0; i<N; i++)
+{
+if (strcmp(studentID, st[i].studentID) == 0)
+{
+return i;
+}
+}
+return -1;
+}
+void SearchClass(Student st[])
+{	
+char classroomID[20];
+	int classIDMatched = 0;
+	printf("Nhap ma so lop muon tim: ");	fflush(stdin);
+	gets(classroomID); // Nhap lop muon tim
+	fflush(stdin);
+	
+	//Tim so luong lop trung khop voi ma so lop muon tim
+	for(int i = 0; i < N; i++)
+	{
+		if(stricmp(classroomID, st[i].classroomID)==0)
+		{
+			classIDMatched++;
+		}
+	}
+	
+	//Xuat tim lop 
+	if(classIDMatched==0)
+	{
+		printf("\nKhong tim thay lop %s\n", classroomID);
+	}
+	else
+	{
+		
+		printf("\nTim thay %d lop co ma so %s", classIDMatched, classroomID);	fflush(stdin);
+		printf("\n%25s%12s%15s%20s%20s%17s\n","Ho va ten","MSSV","Ngay sinh","Noi sinh", "Ma so lop","GPA");	fflush(stdin);
+		
+		for(int i = 0; i < N; i++)
+		{
+			if(stricmp(classroomID, st[i].classroomID)==0)
+			{
+			printf("\n%25s%12s%15d%20s%20s%17.1f\n", st[i].FullName, st[i].studentID, st[i].dayofBirth,st[i].birthplace, st[i].classroomID,st[i].dtbc);
+			}
+		}
+		printf("\n");
+		
+	}
+}
+void xeploai(Student st[])
+{	printf("\n%25s%12s%15s%20s%20s%17s%20s\n","Ho va ten","MSSV","Ngay sinh","Noi sinh", "Ma so lop","GPA","Xep loai");	fflush(stdin);
+	if(st[N].dtbc>=8.0)
+		  			{//scanf("%s",&st[N].xeploai);
+					  printf("Loai Gioi");scanf("%s",&st[N].xeploai);}
+
+          else if(st[N].dtbc<8.0 && st[N].dtbc>=6.5)
+
+                  {printf("Loai Kha");scanf("%s",&st[N].xeploai);}
+
+          else if(st[N].dtbc<6.5 && st[N].dtbc>=5.0)
+                   {printf("Loai Trung binh");scanf("%s",&st[N].xeploai);}
+
+          else
+                    {printf("Loai Yeu");scanf("%s",&st[N].xeploai);}
+			N++;
+		for (int i = 0; i<N; i++)
+	printf("\n%25s%12s%15d%20s%20s%17.1f%20s\n", st[i].FullName, st[i].studentID, st[i].dayofBirth,st[i].birthplace, st[i].classroomID,st[i].dtbc,st[i].xeploai);
+}
+
+
+
+
